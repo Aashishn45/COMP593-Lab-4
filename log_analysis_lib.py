@@ -9,9 +9,14 @@ def main():
     # Get the log file path from the command line
     log_path = get_file_path_from_cmd_line()
 
-    # TODO: Use filter_log_by_regex() to investigate the gateway log per Step 5
+    # Use filter_log_by_regex() to investigate the gateway log per Step 5
+    # filter_log_by_regex(log_path, "sshd", print_summary=True, print_records=True)
+    # filter_log_by_regex(log_path, "invalid user", print_summary=True, print_records=True)
+    # filter_log_by_regex(log_path, "invalid user.*220.195.35.40", print_summary=True, print_records=True)
+    # filter_log_by_regex(log_path, "error", print_summary=True, print_records=True)
+    filter_log_by_regex(log_path, "pam", print_summary=True, print_records=True)
 
-    # TODO: Use filter_log_by_regex() to extract data from the gateway log per Step 6
+    # Use filter_log_by_regex() to extract data from the gateway log per Step 6
 
     return
 
@@ -27,7 +32,7 @@ def get_file_path_from_cmd_line(param_num=1):
     Returns:
         str: File path
     """
-    # TODO: Implement the function body per Step 3
+    # Implement the function body per Step 3
     if len(sys.argv) < param_num +1:
         print(f"Error: Misssing file path expected at param {param_num}")
         sys.exit()
