@@ -8,15 +8,16 @@ Usage:
 Parameters:
  log_path = Path of the gateway log file
 """
-import log_analysis_lib
+import log_analysis_lib as lb 
 
 # Get the log file path from the command line
 # Because this is outside of any function, log_path is a global variable
-log_path = log_analysis_lib.get_file_path_from_cmd_line()
+log_path = lb.get_file_path_from_cmd_line()
 
 def main():
     # Determine how much traffic is on each port
     port_traffic = tally_port_traffic()
+    
 
     # Per step 9, generate reports for ports that have 100 or more records
     for port, count in port_traffic.items():
@@ -36,8 +37,15 @@ def tally_port_traffic():
     Returns:
         dict: Dictionary of destination port number counts
     """
-    # TODO: Complete function body per step 7
-    return {}
+    # Complete function body per step 7
+    dpt_dt = lb.filter_log_by_regex(log_path, "DPT=(.*?) " )[1]
+    
+    dpt_tally = {}
+        
+    for dpt in dpt_dt:
+        dpt_tally[dpt[0]] = dpt_tally.get(dpt[0], 0) + 1
+
+    return dpt_tally 
 
 def generate_port_traffic_report(port_number):
     """Produces a CSV report of all network traffic in a log file for a specified 
