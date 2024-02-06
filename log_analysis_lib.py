@@ -2,6 +2,8 @@
 Library of functions that are useful for analyzing plain-text log files.
 """
 import re
+import sys
+import os
 
 def main():
     # Get the log file path from the command line
@@ -26,7 +28,16 @@ def get_file_path_from_cmd_line(param_num=1):
         str: File path
     """
     # TODO: Implement the function body per Step 3
-    return
+    if len(sys.argv) < param_num +1:
+        print(f"Error: Misssing file path expected at param {param_num}")
+        sys.exit()
+
+    filepath = os.path.abspath(sys.argv[param_num])
+    
+    if not os.path.isfile(filepath):
+        print(f"Error: {filepath} is not valid path")
+
+    return filepath
 
 def filter_log_by_regex(log_path, regex, ignore_case=True, print_summary=False, print_records=False):
     """Gets a list of records in a log file that match a specified regex.
