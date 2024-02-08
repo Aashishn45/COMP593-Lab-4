@@ -59,7 +59,7 @@ def generate_port_traffic_report(port_number):
     # Complete function body per step 8
     # Get data from records that contain the specified destination port
     regex = r"^(.{6}) (.{8}).*SRC=(.+?) DST=(.+?) .*SPT=(.+?) " + f"DPT=({port_number}) " 
-    recordrep = lb.filter_log_by_regex(log_path, regex)
+    recordrep = lb.filter_log_by_regex(log_path, regex)[1]
 
     # Generate the CSV report
     repdf = pd.DataFrame(recordrep)
@@ -67,7 +67,7 @@ def generate_port_traffic_report(port_number):
     rep_filename = f'destination_port_{port_number}_report.csv'
     repdf.to_csv(rep_filename, header=rep_head, index=False)
 
-    return
+    
 
 def generate_invalid_user_report():
     """Produces a CSV report of all network traffic in a log file that show
@@ -84,7 +84,7 @@ def generate_invalid_user_report():
     invhead = ('Date', 'Time', 'Username', 'IP Address')
     invdf.to_csv('invalid_users.csv', header=invhead, index=False)
     
-    return
+    
 
 def generate_source_ip_log(ip_address):
     """Produces a plain text .log file containing all records from a source log
@@ -105,8 +105,6 @@ def generate_source_ip_log(ip_address):
     recdf = pd.DataFrame(rec)
     recdf.to_csv(f"source_ip_{add}.log", header=False, index=False)
 
-
-    return
 
 if __name__ == '__main__':
     main()
