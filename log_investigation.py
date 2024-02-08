@@ -58,7 +58,7 @@ def generate_port_traffic_report(port_number):
     # Complete function body per step 8
     # Get data from records that contain the specified destination port
     regex = "^(.{6}) (.*) myth.* SRC=(.*?) DST=(.*?) .*SPT=(.*?) DPT=" +f"({port_number})" 
-    whatever, recordrep = lb.filter_log_by_regex(log_path, regex)
+    recordrep = lb.filter_log_by_regex(log_path, regex)
 
     # Generate the CSV report
     repdf = pd.DataFrame(recordrep)
@@ -72,9 +72,17 @@ def generate_invalid_user_report():
     """Produces a CSV report of all network traffic in a log file that show
     an attempt to login as an invalid user.
     """
-    # TODO: Complete function body per step 10
+    #Complete function body per step 10
     # Get data from records that show attempted invalid user login
+
+    regex = r"^(.{6}) (.{8}) .* Invalid user (.+?) from (.*)"
+    cap_data = lb.filter_log_by_regex(log_path, regex)
+
     # Generate the CSV report
+    invdf = pd.DataFrame(cap_data)
+    invhead = ('Date', 'Time', 'Username', 'IP Address')
+    invdf.to_csv('invalid_users.csv', header=invhead, index=False)
+    
     return
 
 def generate_source_ip_log(ip_address):
