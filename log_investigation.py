@@ -40,7 +40,7 @@ def tally_port_traffic():
         dict: Dictionary of destination port number counts
     """
     # Complete function body per step 7
-    dpt_dt = lb.filter_log_by_regex(log_path, r" DPT=(.*?) " )[1]
+    dpt_dt = lb.filter_log_by_regex(log_path, 'DPT=(.+?) ')[1]
     
     dpt_tally = {}
         
@@ -58,7 +58,7 @@ def generate_port_traffic_report(port_number):
     """
     # Complete function body per step 8
     # Get data from records that contain the specified destination port
-    regex = r"^(.{6}) (.*) myth.* SRC=(.*?) DST=(.*?) .*SPT=(.*?) DPT=" +f"({port_number})" 
+    regex = r"^(.{6}) (.{8}).*SRC=(.+?) DST=(.+?) .*SPT=(.+?) " + f"DPT=({port_number}) " 
     recordrep = lb.filter_log_by_regex(log_path, regex)
 
     # Generate the CSV report
