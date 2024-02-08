@@ -9,6 +9,7 @@ Parameters:
  log_path = Path of the gateway log file
 """
 import log_analysis_lib as lb 
+import pandas as pd 
 
 # Get the log file path from the command line
 # Because this is outside of any function, log_path is a global variable
@@ -38,7 +39,7 @@ def tally_port_traffic():
         dict: Dictionary of destination port number counts
     """
     # Complete function body per step 7
-    dpt_dt = lb.filter_log_by_regex(log_path, "DPT=(.*?) " )[1]
+    dpt_dt = lb.filter_log_by_regex(log_path, r" DPT=(.*?) " )[1]
     
     dpt_tally = {}
         
@@ -56,10 +57,15 @@ def generate_port_traffic_report(port_number):
     """
     # Complete function body per step 8
     # Get data from records that contain the specified destination port
-    regex = "^(.{6}) (.*) myth.* SRC=(.*?) DST=(.*?) .*SPT=(.*?) DPT=" +f"({port_number})" " "
-    lb.filter_log_by_regex(log_path, regex)
+    regex = "^(.{6}) (.*) myth.* SRC=(.*?) DST=(.*?) .*SPT=(.*?) DPT=" +f"({port_number})" 
+    whatever, recordrep = lb.filter_log_by_regex(log_path, regex)
 
     # Generate the CSV report
+    repdf = pd.DataFrame(recordrep)
+    rep_head = ("Date", "Time", "Source IP Address", "Destination IP Address", "Source Port", "Destination Port")
+    rep_filename = f'destination_port_{port_number}_report.csv'
+    repdf.to_csv(rep_filename, header=rep_head, index=False)
+
     return
 
 def generate_invalid_user_report():
