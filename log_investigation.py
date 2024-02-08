@@ -10,6 +10,7 @@ Parameters:
 """
 import log_analysis_lib as lb 
 import pandas as pd 
+import re 
 
 # Get the log file path from the command line
 # Because this is outside of any function, log_path is a global variable
@@ -92,9 +93,19 @@ def generate_source_ip_log(ip_address):
     Args:
         ip_address (str): Source IP address
     """
-    # TODO: Complete function body per step 11
+    # Complete function body per step 11
     # Get all records that have the specified source IP address
+    add = re.sub(r'\.','_', ip_address)
+
+    regex = rf'^(.* SRC={ip_address} .*) '
+    rec = lb.filter_log_by_regex(log_path, regex)
+
+
     # Save all records to a plain text .txt file
+    recdf = pd.DataFrame(rec)
+    recdf.to_csv(f"source_ip_{add}.log", header=False, index=False)
+    
+
     return
 
 if __name__ == '__main__':
