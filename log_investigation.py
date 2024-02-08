@@ -58,7 +58,7 @@ def generate_port_traffic_report(port_number):
     """
     # Complete function body per step 8
     # Get data from records that contain the specified destination port
-    regex = "^(.{6}) (.*) myth.* SRC=(.*?) DST=(.*?) .*SPT=(.*?) DPT=" +f"({port_number})" 
+    regex = r"^(.{6}) (.*) myth.* SRC=(.*?) DST=(.*?) .*SPT=(.*?) DPT=" +f"({port_number})" 
     recordrep = lb.filter_log_by_regex(log_path, regex)
 
     # Generate the CSV report
@@ -77,7 +77,7 @@ def generate_invalid_user_report():
     # Get data from records that show attempted invalid user login
 
     regex = r"^(.{6}) (.{8}) .* Invalid user (.+?) from (.*)"
-    cap_data = lb.filter_log_by_regex(log_path, regex)
+    cap_data = lb.filter_log_by_regex(log_path, regex)[1]
 
     # Generate the CSV report
     invdf = pd.DataFrame(cap_data)
@@ -98,13 +98,13 @@ def generate_source_ip_log(ip_address):
     add = re.sub(r'\.','_', ip_address)
 
     regex = rf'^(.* SRC={ip_address} .*) '
-    rec = lb.filter_log_by_regex(log_path, regex)
+    rec = lb.filter_log_by_regex(log_path, regex)[1]
 
 
     # Save all records to a plain text .txt file
     recdf = pd.DataFrame(rec)
     recdf.to_csv(f"source_ip_{add}.log", header=False, index=False)
-    
+
 
     return
 
