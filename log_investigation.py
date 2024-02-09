@@ -103,7 +103,7 @@ def generate_source_ip_log(ip_address):
 
     # Save all records to a plain text .txt file
     recdf = pd.DataFrame(rec)
-    recdf.to_csv(f"source_ip_{add}.log", header=False, index=False)
+    recdf.to_csv(f"source_ip_{add}.txt", header=False, index=False)
 
 
 if __name__ == '__main__':
